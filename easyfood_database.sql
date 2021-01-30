@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
   `primeiro_nome` varchar(32) NOT NULL,
   `ultimo_nome` varchar(32) NOT NULL,
-  `telefone` varchar(11) DEFAULT NULL,
+  `telefone` varchar(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `senha_hash` BINARY(64) NOT NULL,
   PRIMARY KEY (`id`),
