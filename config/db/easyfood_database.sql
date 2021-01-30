@@ -19,6 +19,7 @@ USE `easyfood`;
 -- Dumping structure for table easyfood.categorias
 CREATE TABLE IF NOT EXISTS `categorias` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` char(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -83,3 +84,20 @@ INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `se
   ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
   ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
   ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
+
+									    
+-- Dumping structure for table easyfood.reviews
+CREATE TABLE IF NOT EXISTS `reviews` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT(11) unsigned NOT NULL DEFAULT 0,
+  `id_restaurante` INT(11) unsigned NOT NULL DEFAULT 0,
+  `nota` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `comentario` varchar(600) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_usuario` (`id_usuario`),
+  KEY `id_restaurante` (`id_restaurante`),
+  CONSTRAINT `id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `id_restaurante` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+									    
