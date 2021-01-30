@@ -68,3 +68,18 @@ INSERT INTO `pratos` (`id`, `id_restaurante`, `id_categoria`, `nome`, `preco`, `
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `primeiro_nome` varchar(32) NOT NULL,
+  `ultimo_nome` varchar(32) NOT NULL,
+  `telefone` varchar(11) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `senha_hash` BINARY(64) NOT NULL,
+  PRIMARY KEY (`id`),
+)
+
+INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
+  ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
+  ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
+  ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
