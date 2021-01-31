@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
   `id_usuario` INT(11) unsigned NOT NULL DEFAULT 0,
   `id_restaurante` INT(11) unsigned NOT NULL DEFAULT 0,
-  `nota` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `nota` TINYINT(1) unsigned NOT NULL DEFAULT 0,
   `comentario` TEXT,
   PRIMARY KEY (`id`),
   KEY `id_usuario` (`id_usuario`),
