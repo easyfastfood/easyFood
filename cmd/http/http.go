@@ -1,4 +1,4 @@
-//go:generate go run graphql.go
+//go:generate go run http.go
 package main
 
 import (
