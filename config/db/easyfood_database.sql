@@ -105,3 +105,21 @@ INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `se
   ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
   ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
   ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
+									    
+-- Dumping structure for table easyfood.reviews
+CREATE TABLE IF NOT EXISTS `reviews` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT(11) unsigned NOT NULL DEFAULT 0,
+  `id_restaurante` INT(11) unsigned NOT NULL DEFAULT 0,
+  `nota` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `comentario` TEXT,
+  PRIMARY KEY (`id`),
+  KEY `id_usuario` (`id_usuario`),
+  KEY `id_restaurante` (`id_restaurante`),
+  CONSTRAINT `id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `id_restaurante` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+									    
+INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VALUES
+	(1, 1, 5, "Melhor restaurante da região."),
+	(3, 2, 3, "Bons pratos, péssimo atendimento.");
