@@ -123,3 +123,17 @@ CREATE TABLE IF NOT EXISTS `reviews` (
 INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VALUES
 	(1, 1, 5, "Melhor restaurante da região."),
 	(3, 2, 3, "Bons pratos, péssimo atendimento.");
+									    
+CREATE TABLE IF NOT EXISTS `dim_cidade` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` INT(7) unsigned NOT NULL DEFAULT 0,
+  `nome` CHAR(255) NOT NULL DEFAULT '0',
+  `uf` CHAR(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+									    
+INSERT INTO `dim_cidade` (`id`, `codigo`, `nome`, `uf`) VALUES
+	(1, 1100015,'Alta Floresta D''Oeste', 'RO'),
+	(2, 1100023,'Ariquemes', 'RO'),
+	(3, 1100031,'Cabixi', 'RO');
+									    
