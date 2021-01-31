@@ -1,15 +1,9 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.5.8-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             11.0.0.5919
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1 */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;	
+/*!40101 SET NAMES utf8 */;	
+/*!50503 SET NAMES utf8mb4 */;	
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1 */;	
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
 SET foreign_key_checks = 1;
 
 -- Dumping database structure for easyfood
@@ -49,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `pratos` (
   KEY `id_categoria` (`id_categoria`),
   CONSTRAINT `id_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `id_restaurante` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table easyfood.pratos: ~0 rows (approximately)
 /*!40000 ALTER TABLE `pratos` DISABLE KEYS */;
@@ -76,8 +70,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `telefone` varchar(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `senha_hash` BINARY(64) NOT NULL,
-  PRIMARY KEY (`id`),
-)
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
   ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
