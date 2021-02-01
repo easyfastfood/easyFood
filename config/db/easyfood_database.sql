@@ -21,13 +21,14 @@ CREATE Table `dim_horas` (
 -- Dumping structure for table easyfood.categorias
 CREATE TABLE IF NOT EXISTS `categorias` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `categorias` (`id`) VALUES
-  (1),
-  (2),
-  (3);
+  (1, "Brasileira"),
+  (2, "Massas"),
+  (3, "Japonesa");
 
 -- Dumping structure for table easyfood.restaurantes
 CREATE TABLE IF NOT EXISTS `restaurantes` (
@@ -57,6 +58,14 @@ INSERT INTO `restaurantes` (`id_categoria` ,`id_horario_abertura` ,`id_horario_f
 -- Dumping data for table easyfood.categorias: ~0 rows (approximately)
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `restaurante-categoria` (
+  `id_restaurante` INT(11) unsigned NOT NULL,
+  `id_categoria` INT(11) unsigned NOT NULL,
+  PRIMARY KEY (`id_restaurante`, `id_categoria`),
+  CONSTRAINT `restaurante_fk` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `categoria_fk` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 -- Dumping structure for table easyfood.pratos
 CREATE TABLE IF NOT EXISTS `pratos` (
