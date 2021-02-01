@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `dim_cidade` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 									    
-LOAD DATA INFILE 'cidades.csv'
+LOAD DATA INFILE 'easyfood/cidades.csv'
 	INTO TABLE `dim_cidade`
 	FIELDS TERMINATED BY ','
 	LINES TERMINATED BY '\n'
