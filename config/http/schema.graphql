@@ -21,12 +21,22 @@ type Restaurant {
 	address: String!
 }
 
+type Dish {
+	id: Int!
+	category: Category
+	restaurant: Restaurant!
+	name: String!
+	price: Float!
+	cookTime: Int!
+}
+
 type City {
 	id: Int!
 }
 
 type Category {
 	id: Int!
+	name: String!
 }
 
 input createUserInput {
@@ -37,13 +47,23 @@ input createUserInput {
 	senha: String!
 }
 
+input createDishInput {
+	name: String!
+	restaurant: Int!
+	category: Int
+	price: Float!
+	cookTime: Int!
+}
+
 type Query {
 	user(id: Int!): User!
 	restaurant(category: [String!]!): [Restaurant!]
+	dish(name: String!, category: [String!]): [Dish!]
 }
 
 type Mutation {
 	createUser(input: createUserInput!): User!
+	createDish(input: createDishInput!): Boolean!
 }
 
 enum Weekdays {

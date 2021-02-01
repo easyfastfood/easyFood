@@ -10,11 +10,21 @@ import (
 )
 
 type Category struct {
-	ID int `json:"id"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type City struct {
 	ID int `json:"id"`
+}
+
+type Dish struct {
+	ID         int         `json:"id"`
+	Category   *Category   `json:"category"`
+	Restaurant *Restaurant `json:"restaurant"`
+	Name       string      `json:"name"`
+	Price      float64     `json:"price"`
+	CookTime   int         `json:"cookTime"`
 }
 
 type Restaurant struct {
@@ -36,6 +46,14 @@ type User struct {
 	LastName    string `json:"lastName"`
 	PhoneNumber int    `json:"phoneNumber"`
 	Email       string `json:"email"`
+}
+
+type CreateDishInput struct {
+	Name       string  `json:"name"`
+	Restaurant int     `json:"restaurant"`
+	Category   *int    `json:"category"`
+	Price      float64 `json:"price"`
+	CookTime   int     `json:"cookTime"`
 }
 
 type CreateUserInput struct {
