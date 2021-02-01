@@ -1,3 +1,5 @@
+scalar Time
+
 type User {
 	id: Int!
 	firstName: String!
@@ -6,6 +8,50 @@ type User {
 	email: String!
 }
 
+type Restaurant {
+	id: Int!
+	category: Category!
+	openHour: Time!
+	closeHour: Time!
+	openDays: [Weekdays!]!
+	city: City!
+	name: String!
+	description: String
+	phoneNumber: Int!
+	address: String!
+}
+
+type City {
+	id: Int!
+}
+
+type Category {
+	id: Int!
+}
+
+input createUserInput {
+	firstName: String!
+	lastName: String!
+	phoneNumber: Int!
+	email: String!
+	senha: String!
+}
+
 type Query {
 	user(id: Int!): User!
+	restaurant(category: [String!]!): [Restaurant!]
+}
+
+type Mutation {
+	createUser(input: createUserInput!): User!
+}
+
+enum Weekdays {
+	MONDAY
+	TUESDAY
+	WEDNESDAY
+	THURSDAY
+	FRIDAY
+	SATURDAY
+	SUNDAY
 }

@@ -2,10 +2,97 @@
 
 package models
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+	"time"
+)
+
+type Category struct {
+	ID int `json:"id"`
+}
+
+type City struct {
+	ID int `json:"id"`
+}
+
+type Restaurant struct {
+	ID          int        `json:"id"`
+	Category    *Category  `json:"category"`
+	OpenHour    time.Time  `json:"openHour"`
+	CloseHour   time.Time  `json:"closeHour"`
+	OpenDays    []Weekdays `json:"openDays"`
+	City        *City      `json:"city"`
+	Name        string     `json:"name"`
+	Description *string    `json:"description"`
+	PhoneNumber int        `json:"phoneNumber"`
+	Address     string     `json:"address"`
+}
+
 type User struct {
 	ID          int    `json:"id"`
 	FirstName   string `json:"firstName"`
 	LastName    string `json:"lastName"`
 	PhoneNumber int    `json:"phoneNumber"`
 	Email       string `json:"email"`
+}
+
+type CreateUserInput struct {
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
+	PhoneNumber int    `json:"phoneNumber"`
+	Email       string `json:"email"`
+	Senha       string `json:"senha"`
+}
+
+type Weekdays string
+
+const (
+	WeekdaysMonday    Weekdays = "MONDAY"
+	WeekdaysTuesday   Weekdays = "TUESDAY"
+	WeekdaysWednesday Weekdays = "WEDNESDAY"
+	WeekdaysThursday  Weekdays = "THURSDAY"
+	WeekdaysFriday    Weekdays = "FRIDAY"
+	WeekdaysSaturday  Weekdays = "SATURDAY"
+	WeekdaysSunday    Weekdays = "SUNDAY"
+)
+
+var AllWeekdays = []Weekdays{
+	WeekdaysMonday,
+	WeekdaysTuesday,
+	WeekdaysWednesday,
+	WeekdaysThursday,
+	WeekdaysFriday,
+	WeekdaysSaturday,
+	WeekdaysSunday,
+}
+
+func (e Weekdays) IsValid() bool {
+	switch e {
+	case WeekdaysMonday, WeekdaysTuesday, WeekdaysWednesday, WeekdaysThursday, WeekdaysFriday, WeekdaysSaturday, WeekdaysSunday:
+		return true
+	}
+	return false
+}
+
+func (e Weekdays) String() string {
+	return string(e)
+}
+
+func (e *Weekdays) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Weekdays(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Weekdays", str)
+	}
+	return nil
+}
+
+func (e Weekdays) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

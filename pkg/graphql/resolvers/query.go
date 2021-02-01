@@ -2,7 +2,6 @@ package graphql
 
 import (
 	"context"
-
 	"easyfood/pkg/graphql/gqlgen"
 	"easyfood/pkg/graphql/models"
 )
@@ -13,12 +12,12 @@ func NewQueryResolver() gqlgen.QueryResolver {
 	return new(queryResolver)
 }
 
+func (q queryResolver) Restaurant(ctx context.Context, category []string) ([]*models.Restaurant, error) {
+	restaurant := models.NewRestaurant()
+	return restaurant, nil
+}
+
 func (q queryResolver) User(ctx context.Context, id int) (*models.User, error) {
-	return &models.User{
-		ID:          id,
-		FirstName:   "massoni",
-		LastName:    "mestre dos ratos",
-		PhoneNumber: 9125912571,
-		Email:       "ratão@gmail.com",
-	}, nil
+	user := models.NewUser(id)
+	return user, nil
 }
