@@ -55,15 +55,30 @@ input createDishInput {
 	cookTime: Int!
 }
 
+input createRestaurantInput {
+	category: Int!
+	openHour: Time!
+	closeHour: Time!
+	openDays: [Weekdays!]!
+	city: Int!
+	name: String!
+	description: String
+	phoneNumber: Int!
+	address: String!
+}
+
 type Query {
 	user(id: Int!): User!
 	restaurant(category: [String!]!): [Restaurant!]
 	dish(name: String!, category: [String!]): [Dish!]
+	category(id: Int!): Category!
 }
 
 type Mutation {
 	createUser(input: createUserInput!): User!
 	createDish(input: createDishInput!): Boolean!
+	createCategory(name: String!): Boolean!
+	createRestaurant(input: createRestaurantInput!): Restaurant!
 }
 
 enum Weekdays {

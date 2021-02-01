@@ -12,6 +12,11 @@ func NewQueryResolver() gqlgen.QueryResolver {
 	return new(queryResolver)
 }
 
+func (q queryResolver) Category(ctx context.Context, id int) (*models.Category, error) {
+	category := models.NewCategory()
+	return category, nil
+}
+
 func (q queryResolver) Dish(ctx context.Context, name string, category []string) ([]*models.Dish, error) {
 	dish := models.NewDish()
 	return dish, nil

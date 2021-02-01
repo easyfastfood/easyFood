@@ -56,6 +56,18 @@ type CreateDishInput struct {
 	CookTime   int     `json:"cookTime"`
 }
 
+type CreateRestaurantInput struct {
+	Category    int        `json:"category"`
+	OpenHour    time.Time  `json:"openHour"`
+	CloseHour   time.Time  `json:"closeHour"`
+	OpenDays    []Weekdays `json:"openDays"`
+	City        int        `json:"city"`
+	Name        string     `json:"name"`
+	Description *string    `json:"description"`
+	PhoneNumber int        `json:"phoneNumber"`
+	Address     string     `json:"address"`
+}
+
 type CreateUserInput struct {
 	FirstName   string `json:"firstName"`
 	LastName    string `json:"lastName"`
