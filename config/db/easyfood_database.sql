@@ -132,8 +132,9 @@ CREATE TABLE IF NOT EXISTS `dim_cidade` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 									    
-INSERT INTO `dim_cidade` (`id`, `codigo`, `nome`, `uf`) VALUES
-	(1, 1100015,'Alta Floresta D''Oeste', 'RO'),
-	(2, 1100023,'Ariquemes', 'RO'),
-	(3, 1100031,'Cabixi', 'RO');
+LOAD DATA INFILE 'cidades.csv'
+INTO TABLE `dim_cidade`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
 									    
