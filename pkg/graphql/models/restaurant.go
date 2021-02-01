@@ -13,7 +13,7 @@ func NewRestaurant() []*Restaurant {
 		City:        nil,
 		Name:        "Restaurante do Zé",
 		Description: nil,
-		PhoneNumber: 3197621337,
+		PhoneNumber: "3197621337",
 		Address:     "Rua do Zé, 991",
 	})
 

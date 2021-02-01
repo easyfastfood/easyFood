@@ -331,7 +331,7 @@ type User {
 	id: Int!
 	firstName: String!
 	lastName: String!
-	phoneNumber: Int!
+	phoneNumber: String!
 	email: String!
 }
 
@@ -344,7 +344,7 @@ type Restaurant {
 	city: City!
 	name: String!
 	description: String
-	phoneNumber: Int!
+	phoneNumber: String!
 	address: String!
 }
 
@@ -359,7 +359,7 @@ type Category {
 input createUserInput {
 	firstName: String!
 	lastName: String!
-	phoneNumber: Int!
+	phoneNumber: String!
 	email: String!
 	senha: String!
 }
@@ -1058,9 +1058,9 @@ func (ec *executionContext) _Restaurant_phoneNumber(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Restaurant_address(ctx context.Context, field graphql.CollectedField, obj *models.Restaurant) (ret graphql.Marshaler) {
@@ -1233,9 +1233,9 @@ func (ec *executionContext) _User_phoneNumber(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -2386,7 +2386,7 @@ func (ec *executionContext) unmarshalInputcreateUserInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("phoneNumber"))
-			it.PhoneNumber, err = ec.unmarshalNInt2int(ctx, v)
+			it.PhoneNumber, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

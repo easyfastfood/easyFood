@@ -4,7 +4,7 @@ type User {
 	id: Int!
 	firstName: String!
 	lastName: String!
-	phoneNumber: Int!
+	phoneNumber: String!
 	email: String!
 }
 
@@ -17,7 +17,7 @@ type Restaurant {
 	city: City!
 	name: String!
 	description: String
-	phoneNumber: Int!
+	phoneNumber: String!
 	address: String!
 }
 
@@ -32,7 +32,7 @@ type Category {
 input createUserInput {
 	firstName: String!
 	lastName: String!
-	phoneNumber: Int!
+	phoneNumber: String!
 	email: String!
 	senha: String!
 }

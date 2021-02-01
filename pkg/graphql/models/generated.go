@@ -26,7 +26,7 @@ type Restaurant struct {
 	City        *City      `json:"city"`
 	Name        string     `json:"name"`
 	Description *string    `json:"description"`
-	PhoneNumber int        `json:"phoneNumber"`
+	PhoneNumber string     `json:"phoneNumber"`
 	Address     string     `json:"address"`
 }
 
@@ -34,14 +34,14 @@ type User struct {
 	ID          int    `json:"id"`
 	FirstName   string `json:"firstName"`
 	LastName    string `json:"lastName"`
-	PhoneNumber int    `json:"phoneNumber"`
+	PhoneNumber string `json:"phoneNumber"`
 	Email       string `json:"email"`
 }
 
 type CreateUserInput struct {
 	FirstName   string `json:"firstName"`
 	LastName    string `json:"lastName"`
-	PhoneNumber int    `json:"phoneNumber"`
+	PhoneNumber string `json:"phoneNumber"`
 	Email       string `json:"email"`
 	Senha       string `json:"senha"`
 }

@@ -5,7 +5,7 @@ func NewUser(id int) *User {
 		ID:          id,
 		FirstName:   "Rafael",
 		LastName:    "Barbosa",
-		PhoneNumber: 312345678,
+		PhoneNumber: "3199827382",
 		Email:       "massoni@gmail.com",
 	}
 
