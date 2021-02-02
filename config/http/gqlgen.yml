@@ -11,3 +11,5 @@ models:
     fields:
       dishes:
         resolver: true
+      category:
+        resolver: true

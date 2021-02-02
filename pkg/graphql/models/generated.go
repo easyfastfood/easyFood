@@ -28,17 +28,17 @@ type Dish struct {
 }
 
 type Restaurant struct {
-	ID          int        `json:"id"`
-	Category    *Category  `json:"category"`
-	Dishes      []*Dish    `json:"dishes"`
-	OpenHour    time.Time  `json:"openHour"`
-	CloseHour   time.Time  `json:"closeHour"`
-	OpenDays    []Weekdays `json:"openDays"`
-	City        *City      `json:"city"`
-	Name        string     `json:"name"`
-	Description *string    `json:"description"`
-	PhoneNumber string     `json:"phoneNumber"`
-	Address     string     `json:"address"`
+	ID          int         `json:"id"`
+	Category    []*Category `json:"category"`
+	Dishes      []*Dish     `json:"dishes"`
+	OpenHour    time.Time   `json:"openHour"`
+	CloseHour   time.Time   `json:"closeHour"`
+	OpenDays    []Weekdays  `json:"openDays"`
+	City        *City       `json:"city"`
+	Name        string      `json:"name"`
+	Description *string     `json:"description"`
+	PhoneNumber string      `json:"phoneNumber"`
+	Address     string      `json:"address"`
 }
 
 type User struct {

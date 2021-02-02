@@ -4,6 +4,7 @@ import (
 	"context"
 	"easyfood/pkg/entity"
 	"fmt"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -22,16 +23,16 @@ func NewCategoryService(db *sqlx.DB) CategoryService {
 }
 
 func (c categoryService) Get(ctx context.Context, id *int) ([]*entity.Category, error) {
-	result := make([]*entity.Category,0)
+	result := make([]*entity.Category, 0)
 
 	query := `SELECT * FROM categorias`
 
 	if id != nil {
 		query = fmt.Sprintf(`SELECT * FROM categorias WHERE id = %d`, *id)
 	}
-	err := c.db.Select(&result, query)
+	err := c.db.SelectContext(ctx, &result, query)
 
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return result, err
@@ -40,31 +41,29 @@ func (c categoryService) Get(ctx context.Context, id *int) ([]*entity.Category, 
 func (c categoryService) GetByDish(ctx context.Context, dishId int) (*entity.Category, error) {
 	result := new(entity.Category)
 
-	query := `SELECT * FROM categorias as c 
+	query := `SELECT c.id, c.nome FROM categorias as c 
 				INNER JOIN pratos as p
-				on c.id = p.id_categoria
+				ON c.id = p.id_categoria
 				WHERE p.id = ?`
 
-	err := c.db.Get(result, query, dishId)
-	if err != nil{
+	err := c.db.GetContext(ctx, result, query, dishId)
+	if err != nil {
 		return nil, err
 	}
 	return result, err
 }
 
 func (c categoryService) GetByRestaurant(ctx context.Context, restaurantId int) ([]*entity.Category, error) {
-	result := make([]*entity.Category,0)
+	result := make([]*entity.Category, 0)
 
-	query := `SELECT * FROM categorias as c 
-				INNER JOIN restaurante-categoria as rc
-				on c.id = rc.id_categoria
-				WHERE rc.id_restaurante = ?`
+	query := fmt.Sprintf("SELECT c.id, c.nome FROM categorias as c " +
+		"INNER JOIN `restaurante-categoria` as rc " +
+		"ON (c.id = rc.id_categoria) " +
+		"WHERE rc.id_restaurante = ?")
 
-	err := c.db.Select(&result, query, restaurantId)
-	if err != nil{
+	err := c.db.SelectContext(ctx, &result, query, restaurantId)
+	if err != nil {
 		return nil, err
 	}
-	return result, err}
-
-
-
+	return result, err
+}

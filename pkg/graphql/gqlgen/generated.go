@@ -113,6 +113,7 @@ type QueryResolver interface {
 	Category(ctx context.Context, id *int) ([]*models.Category, error)
 }
 type RestaurantResolver interface {
+	Category(ctx context.Context, obj *models.Restaurant) ([]*models.Category, error)
 	Dishes(ctx context.Context, obj *models.Restaurant) ([]*models.Dish, error)
 }
 
@@ -478,7 +479,7 @@ type User {
 
 type Restaurant {
 	id: Int!
-	category: Category!
+	category: [Category!]
 	dishes: [Dish!]
 	openHour: Time!
 	closeHour: Time!
@@ -1496,28 +1497,25 @@ func (ec *executionContext) _Restaurant_category(ctx context.Context, field grap
 		Object:     "Restaurant",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Category, nil
+		return ec.resolvers.Restaurant().Category(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(*models.Category)
+	res := resTmp.([]*models.Category)
 	fc.Result = res
-	return ec.marshalNCategory2ᚖeasyfoodᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx, field.Selections, res)
+	return ec.marshalOCategory2ᚕᚖeasyfoodᚋpkgᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Restaurant_dishes(ctx context.Context, field graphql.CollectedField, obj *models.Restaurant) (ret graphql.Marshaler) {
@@ -3535,10 +3533,16 @@ func (ec *executionContext) _Restaurant(ctx context.Context, sel ast.SelectionSe
 				atomic.AddUint32(&invalids, 1)
 			}
 		case "category":
-			out.Values[i] = ec._Restaurant_category(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Restaurant_category(ctx, field, obj)
+				return res
+			})
 		case "dishes":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {

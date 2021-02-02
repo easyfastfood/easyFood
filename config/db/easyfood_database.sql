@@ -130,6 +130,12 @@ INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VAL
 	(1, 1, 5, "Melhor restaurante da região."),
 	(3, 2, 3, "Bons pratos, péssimo atendimento.");
 
+INSERT INTO `restaurante-categoria` (`id_restaurante`, `id_categoria`) VALUES
+	(1, 1),
+	(2, 2),
+  (1, 2),
+  (2, 1);
+
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
   `codigo` INT(7) unsigned NOT NULL DEFAULT 0,

@@ -25,3 +25,11 @@ func (r restaurantResolver) Dishes(ctx context.Context, restaurant *models.Resta
 	return models.NewDish(dishes...), nil
 }
 
+func (r restaurantResolver) Category(ctx context.Context, restaurant *models.Restaurant) ([]*models.Category, error) {
+	category, err := r.services.Category.GetByRestaurant(ctx, restaurant.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return models.NewCategory(category...), nil
+}
