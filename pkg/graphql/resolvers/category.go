@@ -25,3 +25,14 @@ func (c categoryResolver) Dishes(ctx context.Context, category *models.Category)
 	}
 	return models.NewDish(dishes...), nil
 }
+
+func (c categoryResolver) Restaurants(ctx context.Context, category *models.Category) ([]*models.Restaurant, error) {
+	restaurants, err := c.services.Restaurant.GetByCategory(ctx, category.ID)
+	if err != nil {
+		return nil, err
+	}
+	if len(restaurants) == 0 {
+		return nil, nil
+	}
+	return models.NewRestaurant(restaurants...), nil
+}

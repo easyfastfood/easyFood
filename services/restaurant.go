@@ -53,15 +53,14 @@ func (d restaurantService) Get(ctx context.Context, id *int) ([]*entity.Restaura
 func (d restaurantService) GetByCategory(ctx context.Context, categoryID int) ([]*entity.Restaurant, error) {
 	result := make([]*entity.Restaurant, 0)
 
-	query := `
-		SELECT r.id, r.horario_abertura, r.horario_fechamento, r.id_cidade, 
-		r.dias_funcionamento, r.nome, r.descricao, r.telefone, r.endereco 
-		FROM restaurantes r 
-		INNER JOIN restaurante-categoria rc ON rc.id_restaurante = r.id
-		WHERE rc.id_categoria = ?
-	`
+	query := fmt.Sprintf(
+		"SELECT r.id, r.horario_abertura, r.horario_fechamento, r.id_cidade,"+
+			"r.dias_funcionamento, r.nome, r.descricao, r.telefone, r.endereco "+
+			"FROM restaurantes r "+
+			"INNER JOIN `restaurante-categoria` rc ON rc.id_restaurante = r.id "+
+			"WHERE rc.id_categoria = %d", categoryID)
 
-	err := d.db.SelectContext(ctx, &result, query, categoryID)
+	err := d.db.SelectContext(ctx, &result, query)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -108,4 +107,3 @@ func (d restaurantService) Create(ctx context.Context, restaurant *entity.Restau
 	restaurant.Id = int(id)
 	return nil
 }
-

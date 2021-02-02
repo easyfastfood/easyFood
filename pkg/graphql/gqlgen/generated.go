@@ -47,9 +47,10 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Category struct {
-		Dishes func(childComplexity int) int
-		ID     func(childComplexity int) int
-		Name   func(childComplexity int) int
+		Dishes      func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Name        func(childComplexity int) int
+		Restaurants func(childComplexity int) int
 	}
 
 	City struct {
@@ -107,6 +108,7 @@ type ComplexityRoot struct {
 
 type CategoryResolver interface {
 	Dishes(ctx context.Context, obj *models.Category) ([]*models.Dish, error)
+	Restaurants(ctx context.Context, obj *models.Category) ([]*models.Restaurant, error)
 }
 type DishResolver interface {
 	Category(ctx context.Context, obj *models.Dish) (*models.Category, error)
@@ -164,6 +166,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Category.Name(childComplexity), true
+
+	case "Category.restaurants":
+		if e.complexity.Category.Restaurants == nil {
+			break
+		}
+
+		return e.complexity.Category.Restaurants(childComplexity), true
 
 	case "City.code":
 		if e.complexity.City.Code == nil {
@@ -551,6 +560,7 @@ type Category {
 	id: Int!
 	name: String!
 	dishes: [Dish!]
+	restaurants: [Restaurant!]
 }
 
 input createUserInput {
@@ -885,6 +895,38 @@ func (ec *executionContext) _Category_dishes(ctx context.Context, field graphql.
 	res := resTmp.([]*models.Dish)
 	fc.Result = res
 	return ec.marshalODish2ᚕᚖeasyfoodᚋpkgᚋgraphqlᚋmodelsᚐDishᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Category_restaurants(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Category().Restaurants(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Restaurant)
+	fc.Result = res
+	return ec.marshalORestaurant2ᚕᚖeasyfoodᚋpkgᚋgraphqlᚋmodelsᚐRestaurantᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _City_id(ctx context.Context, field graphql.CollectedField, obj *models.City) (ret graphql.Marshaler) {
@@ -3496,6 +3538,17 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Category_dishes(ctx, field, obj)
+				return res
+			})
+		case "restaurants":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Category_restaurants(ctx, field, obj)
 				return res
 			})
 		default:

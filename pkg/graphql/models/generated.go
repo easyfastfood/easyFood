@@ -9,9 +9,10 @@ import (
 )
 
 type Category struct {
-	ID     int     `json:"id"`
-	Name   string  `json:"name"`
-	Dishes []*Dish `json:"dishes"`
+	ID          int           `json:"id"`
+	Name        string        `json:"name"`
+	Dishes      []*Dish       `json:"dishes"`
+	Restaurants []*Restaurant `json:"restaurants"`
 }
 
 type City struct {

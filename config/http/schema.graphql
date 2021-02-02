@@ -42,6 +42,7 @@ type Category {
 	id: Int!
 	name: String!
 	dishes: [Dish!]
+	restaurants: [Restaurant!]
 }
 
 input createUserInput {
