@@ -55,8 +55,8 @@ input createUserInput {
 
 input createDishInput {
 	name: String!
-	restaurant: Int!
-	category: Int
+	restaurantId: Int!
+	categoryId: Int
 	price: Float!
 	cookTime: Int!
 }
@@ -70,11 +70,24 @@ input updateDishInput {
 }
 
 input createRestaurantInput {
-	category: Int!
+	categoryId: Int!
 	openHour: Hour!
 	closeHour: Hour!
 	openDays: [Weekdays!]!
-	city: Int!
+	cityId: Int!
+	name: String!
+	description: String
+	phoneNumber: String!
+	address: String!
+}
+
+input updateRestaurantInput {
+	id: Int!
+	categoryId: Int!
+	openHour: Hour!
+	closeHour: Hour!
+	openDays: [Weekdays!]!
+	cityId: Int!
 	name: String!
 	description: String
 	phoneNumber: String!
@@ -97,7 +110,7 @@ type Mutation {
 	createUser(input: createUserInput!): User!
 	createDish(input: createDishInput!): Dish!
 	createCategory(name: String!): Boolean!
-	createRestaurant(input: createRestaurantInput!): Restaurant!
+	updateRestaurant(input: updateRestaurantInput!): Restaurant!
 	updateDish(input: updateDishInput!): Dish!
 	updateCategory(input: updateCategoryInput!): Boolean!
 }

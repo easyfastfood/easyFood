@@ -14,8 +14,8 @@ type RestaurantService interface {
 	Get(ctx context.Context, id *int) ([]*entity.Restaurant, error)
 	GetByCategory(ctx context.Context, categoryID int) ([]*entity.Restaurant, error)
 	GetByDish(ctx context.Context, dishID int) (*entity.Restaurant, error)
-
 	Create(ctx context.Context, restaurant *entity.Restaurant) error
+	Update(ctx context.Context, restaurant *entity.Restaurant) error
 }
 
 type restaurantService struct {
@@ -105,5 +105,21 @@ func (d restaurantService) Create(ctx context.Context, restaurant *entity.Restau
 
 	id, _ := result.LastInsertId()
 	restaurant.Id = int(id)
+	return nil
+}
+
+func (d restaurantService) Update(ctx context.Context, restaurant *entity.Restaurant) error {
+	query := `
+		UPDATE restaurantes
+		SET horario_abertura = :horario_abertura, horario_fechamento = :horario_fechamento, 
+			id_cidade = :id_cidade, dias_funcionamento = :dias_funcionamento, nome = :nome,
+			descricao = :descricao, telefone = :telefone, endereco = :endereco
+		WHERE id = :id
+	`
+	_, err := d.db.NamedExecContext(ctx, query, restaurant)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

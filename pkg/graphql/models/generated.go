@@ -54,19 +54,19 @@ type User struct {
 }
 
 type CreateDishInput struct {
-	Name       string  `json:"name"`
-	Restaurant int     `json:"restaurant"`
-	Category   *int    `json:"category"`
-	Price      float64 `json:"price"`
-	CookTime   int     `json:"cookTime"`
+	Name         string  `json:"name"`
+	RestaurantID int     `json:"restaurantId"`
+	CategoryID   *int    `json:"categoryId"`
+	Price        float64 `json:"price"`
+	CookTime     int     `json:"cookTime"`
 }
 
 type CreateRestaurantInput struct {
-	Category    int        `json:"category"`
+	CategoryID  int        `json:"categoryId"`
 	OpenHour    string     `json:"openHour"`
 	CloseHour   string     `json:"closeHour"`
 	OpenDays    []Weekdays `json:"openDays"`
-	City        int        `json:"city"`
+	CityID      int        `json:"cityId"`
 	Name        string     `json:"name"`
 	Description *string    `json:"description"`
 	PhoneNumber string     `json:"phoneNumber"`
@@ -92,6 +92,19 @@ type UpdateDishInput struct {
 	Category *int    `json:"category"`
 	Price    float64 `json:"price"`
 	CookTime int     `json:"cookTime"`
+}
+
+type UpdateRestaurantInput struct {
+	ID          int        `json:"id"`
+	CategoryID  int        `json:"categoryId"`
+	OpenHour    string     `json:"openHour"`
+	CloseHour   string     `json:"closeHour"`
+	OpenDays    []Weekdays `json:"openDays"`
+	CityID      int        `json:"cityId"`
+	Name        string     `json:"name"`
+	Description *string    `json:"description"`
+	PhoneNumber string     `json:"phoneNumber"`
+	Address     string     `json:"address"`
 }
 
 type Weekdays string
