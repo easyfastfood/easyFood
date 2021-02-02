@@ -8,3 +8,7 @@ type Dish struct {
 	Price        float64 `db:"preco"`
 	CookTime     int     `db:"tempo_de_preparo"`
 }
+
+func (d *Dish) IsEmpty() bool {
+	return d == nil || (d.Id == 0 && d.CategoryID == nil)
+}

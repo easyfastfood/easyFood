@@ -36,6 +36,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Dish() DishResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 	Restaurant() RestaurantResolver
@@ -100,6 +101,10 @@ type ComplexityRoot struct {
 	}
 }
 
+type DishResolver interface {
+	Category(ctx context.Context, obj *models.Dish) (*models.Category, error)
+	Restaurant(ctx context.Context, obj *models.Dish) (*models.Restaurant, error)
+}
 type MutationResolver interface {
 	CreateUser(ctx context.Context, input models.CreateUserInput) (*models.User, error)
 	CreateDish(ctx context.Context, input models.CreateDishInput) (bool, error)
@@ -892,14 +897,14 @@ func (ec *executionContext) _Dish_category(ctx context.Context, field graphql.Co
 		Object:     "Dish",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Category, nil
+		return ec.resolvers.Dish().Category(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -924,14 +929,14 @@ func (ec *executionContext) _Dish_restaurant(ctx context.Context, field graphql.
 		Object:     "Dish",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Restaurant, nil
+		return ec.resolvers.Dish().Restaurant(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3358,29 +3363,47 @@ func (ec *executionContext) _Dish(ctx context.Context, sel ast.SelectionSet, obj
 		case "id":
 			out.Values[i] = ec._Dish_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "category":
-			out.Values[i] = ec._Dish_category(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Dish_category(ctx, field, obj)
+				return res
+			})
 		case "restaurant":
-			out.Values[i] = ec._Dish_restaurant(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Dish_restaurant(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "name":
 			out.Values[i] = ec._Dish_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "price":
 			out.Values[i] = ec._Dish_price(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "cookTime":
 			out.Values[i] = ec._Dish_cookTime(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))

@@ -7,6 +7,13 @@ model:
   filename: ./../../pkg/graphql/models/generated.go
 
 models:
+  Dish:
+    fields:
+      restaurant:
+        resolver: true
+      category:
+        resolver: true
+
   Restaurant:
     fields:
       dishes:

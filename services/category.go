@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"database/sql"
 	"easyfood/pkg/entity"
 	"fmt"
 
@@ -48,6 +49,9 @@ func (c categoryService) GetByDish(ctx context.Context, dishId int) (*entity.Cat
 
 	err := c.db.GetContext(ctx, result, query, dishId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return result, err
@@ -56,13 +60,16 @@ func (c categoryService) GetByDish(ctx context.Context, dishId int) (*entity.Cat
 func (c categoryService) GetByRestaurant(ctx context.Context, restaurantId int) ([]*entity.Category, error) {
 	result := make([]*entity.Category, 0)
 
-	query := fmt.Sprintf("SELECT c.id, c.nome FROM categorias as c " +
-		"INNER JOIN `restaurante-categoria` as rc " +
-		"ON (c.id = rc.id_categoria) " +
-		"WHERE rc.id_restaurante = ?")
+	query := `SELECT c.id, c.nome FROM categorias as c 
+				INNER JOIN restaurante-categoria as rc
+				on c.id = rc.id_categoria
+				WHERE rc.id_restaurante = ?`
 
 	err := c.db.SelectContext(ctx, &result, query, restaurantId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return result, err

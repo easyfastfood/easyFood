@@ -26,3 +26,7 @@ func (a app) Query() gqlgen.QueryResolver {
 func (a app) Restaurant() gqlgen.RestaurantResolver {
 	return NewRestaurantResolver(a.services)
 }
+
+func (a app) Dish() gqlgen.DishResolver {
+	return NewDishResolver(a.services)
+}
