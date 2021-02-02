@@ -14,6 +14,7 @@ type DishService interface {
 	GetByCategory(ctx context.Context, categoryID int) ([]*entity.Dish, error)
 	GetByRestaurant(ctx context.Context, restaurantID int) ([]*entity.Dish, error)
 	Create(ctx context.Context, dish *entity.Dish) error
+	Update(ctx context.Context, dish *entity.Dish) error
 }
 
 type dishService struct {
@@ -83,5 +84,20 @@ func (d dishService) Create(ctx context.Context, dish *entity.Dish) error {
 
 	id, _ := result.LastInsertId()
 	dish.Id = int(id)
+	return nil
+}
+
+func (d dishService) Update(ctx context.Context, dish *entity.Dish) error {
+	query := `
+		UPDATE pratos
+		SET id_categoria = :id_categoria, nome = :nome, preco = :preco, 
+		    tempo_de_preparo = :tempo_de_preparo
+		WHERE id = :id
+	`
+	_, err := d.db.NamedExecContext(ctx, query, dish)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

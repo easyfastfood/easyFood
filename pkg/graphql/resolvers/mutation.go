@@ -129,3 +129,24 @@ func (m mutationResolver) UpdateCategory(ctx context.Context, input models.Updat
 	}
 	return true, nil
 }
+
+func (m mutationResolver) UpdateDish(ctx context.Context, input models.UpdateDishInput) (*models.Dish, error) {
+	if input.Name == "" {
+		return nil, errors.New("invalid dish name")
+	}
+
+	dish := entity.Dish{
+		Id:         input.ID,
+		CategoryID: input.Category,
+		Name:       input.Name,
+		Price:      input.Price,
+		CookTime:   input.CookTime,
+	}
+
+	err := m.services.Dish.Update(ctx, &dish)
+	if err != nil {
+		return nil, err
+	}
+
+	return models.NewDish(&dish)[0], nil
+}

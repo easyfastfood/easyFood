@@ -86,6 +86,14 @@ type UpdateCategoryInput struct {
 	Name string `json:"name"`
 }
 
+type UpdateDishInput struct {
+	ID       int     `json:"id"`
+	Name     string  `json:"name"`
+	Category *int    `json:"category"`
+	Price    float64 `json:"price"`
+	CookTime int     `json:"cookTime"`
+}
+
 type Weekdays string
 
 const (
