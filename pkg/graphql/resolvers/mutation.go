@@ -10,7 +10,7 @@ import (
 	"easyfood/services"
 )
 
-type mutationResolver struct{
+type mutationResolver struct {
 	services services.All
 }
 
@@ -68,6 +68,18 @@ func (m mutationResolver) CreateUser(ctx context.Context, input models.CreateUse
 }
 
 func (m mutationResolver) CreateCategory(ctx context.Context, name string) (bool, error) {
+	if name == "" {
+		return false, errors.New("invalid name")
+	}
+
+	category := entity.Category{
+		Name: name,
+	}
+
+	err := m.services.Category.Create(ctx, &category)
+	if err != nil {
+		return false, err
+	}
 	return true, nil
 }
 
