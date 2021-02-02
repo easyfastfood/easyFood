@@ -30,3 +30,7 @@ func (a app) Restaurant() gqlgen.RestaurantResolver {
 func (a app) Dish() gqlgen.DishResolver {
 	return NewDishResolver(a.services)
 }
+
+func (a app) Category() gqlgen.CategoryResolver {
+	return NewCategoryResolver(a.services)
+}

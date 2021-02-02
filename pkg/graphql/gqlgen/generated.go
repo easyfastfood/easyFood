@@ -35,6 +35,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Category() CategoryResolver
 	Dish() DishResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
@@ -46,12 +47,16 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Category struct {
-		ID   func(childComplexity int) int
-		Name func(childComplexity int) int
+		Dishes func(childComplexity int) int
+		ID     func(childComplexity int) int
+		Name   func(childComplexity int) int
 	}
 
 	City struct {
-		ID func(childComplexity int) int
+		Code func(childComplexity int) int
+		ID   func(childComplexity int) int
+		Name func(childComplexity int) int
+		Uf   func(childComplexity int) int
 	}
 
 	Dish struct {
@@ -100,6 +105,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type CategoryResolver interface {
+	Dishes(ctx context.Context, obj *models.Category) ([]*models.Dish, error)
+}
 type DishResolver interface {
 	Category(ctx context.Context, obj *models.Dish) (*models.Category, error)
 	Restaurant(ctx context.Context, obj *models.Dish) (*models.Restaurant, error)
@@ -136,6 +144,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "Category.dishes":
+		if e.complexity.Category.Dishes == nil {
+			break
+		}
+
+		return e.complexity.Category.Dishes(childComplexity), true
+
 	case "Category.id":
 		if e.complexity.Category.ID == nil {
 			break
@@ -150,12 +165,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Category.Name(childComplexity), true
 
+	case "City.code":
+		if e.complexity.City.Code == nil {
+			break
+		}
+
+		return e.complexity.City.Code(childComplexity), true
+
 	case "City.id":
 		if e.complexity.City.ID == nil {
 			break
 		}
 
 		return e.complexity.City.ID(childComplexity), true
+
+	case "City.name":
+		if e.complexity.City.Name == nil {
+			break
+		}
+
+		return e.complexity.City.Name(childComplexity), true
+
+	case "City.uf":
+		if e.complexity.City.Uf == nil {
+			break
+		}
+
+		return e.complexity.City.Uf(childComplexity), true
 
 	case "Dish.category":
 		if e.complexity.Dish.Category == nil {
@@ -506,11 +542,15 @@ type Dish {
 
 type City {
 	id: Int!
+	code: Int!
+	name: String!
+	uf: String!
 }
 
 type Category {
 	id: Int!
 	name: String!
+	dishes: [Dish!]
 }
 
 input createUserInput {
@@ -815,6 +855,38 @@ func (ec *executionContext) _Category_name(ctx context.Context, field graphql.Co
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Category_dishes(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Category().Dishes(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Dish)
+	fc.Result = res
+	return ec.marshalODish2ᚕᚖeasyfoodᚋpkgᚋgraphqlᚋmodelsᚐDishᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _City_id(ctx context.Context, field graphql.CollectedField, obj *models.City) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -848,6 +920,111 @@ func (ec *executionContext) _City_id(ctx context.Context, field graphql.Collecte
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _City_code(ctx context.Context, field graphql.CollectedField, obj *models.City) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "City",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Code, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _City_name(ctx context.Context, field graphql.CollectedField, obj *models.City) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "City",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _City_uf(ctx context.Context, field graphql.CollectedField, obj *models.City) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "City",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Uf, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Dish_id(ctx context.Context, field graphql.CollectedField, obj *models.Dish) (ret graphql.Marshaler) {
@@ -3303,13 +3480,24 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 		case "id":
 			out.Values[i] = ec._Category_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Category_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
+		case "dishes":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Category_dishes(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3334,6 +3522,21 @@ func (ec *executionContext) _City(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = graphql.MarshalString("City")
 		case "id":
 			out.Values[i] = ec._City_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "code":
+			out.Values[i] = ec._City_code(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "name":
+			out.Values[i] = ec._City_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "uf":
+			out.Values[i] = ec._City_uf(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

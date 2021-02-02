@@ -13,7 +13,6 @@ type DishService interface {
 	Get(ctx context.Context, id *int) ([]*entity.Dish, error)
 	GetByCategory(ctx context.Context, categoryID int) ([]*entity.Dish, error)
 	GetByRestaurant(ctx context.Context, restaurantID int) ([]*entity.Dish, error)
-
 	Create(ctx context.Context, dish *entity.Dish) error
 }
 
@@ -86,4 +85,3 @@ func (d dishService) Create(ctx context.Context, dish *entity.Dish) error {
 	dish.Id = int(id)
 	return nil
 }
-

@@ -7,6 +7,9 @@ import (
 func NewRestaurant(restaurants ...*entity.Restaurant) []*Restaurant {
 	result := make([]*Restaurant, 0)
 	for _, restaurant := range restaurants {
+		if restaurant.IsEmpty() {
+			continue
+		}
 		result = append(result, &Restaurant{
 			ID:          restaurant.Id,
 			Name:        restaurant.Name,

@@ -20,3 +20,8 @@ models:
         resolver: true
       category:
         resolver: true
+  
+  Category:
+    fields:
+      dishes:
+        resolver: true

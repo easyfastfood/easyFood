@@ -33,11 +33,15 @@ type Dish {
 
 type City {
 	id: Int!
+	code: Int!
+	name: String!
+	uf: String!
 }
 
 type Category {
 	id: Int!
 	name: String!
+	dishes: [Dish!]
 }
 
 input createUserInput {

@@ -8,3 +8,7 @@ type User struct {
 	PhoneNumber string `db:"telefone"`
 	Password    string `db:"senha_hash"`
 }
+
+func (u *User) IsEmpty() bool {
+	return u == nil || u.Id == 0
+}
