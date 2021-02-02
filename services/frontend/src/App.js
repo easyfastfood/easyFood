@@ -3,6 +3,7 @@ import "./App.css";
 import { ApolloProvider, useMutation } from "@apollo/react-hooks";
 import { client } from "./apollo-client";
 import { Route } from "react-router";
+import { Link } from "react-router-dom";
 import {
     GetAllRestaurants,
     GetRestaurantsByID
@@ -69,6 +70,17 @@ function Restaurants() {
   );
 }
 
+function HomePage() {
+  return (
+    <div>
+      <ApolloProvider client={client}>
+        <Link to="/restaurant">Restaurantes</Link>
+        <Link to="/category">Categorias</Link>
+        <Link to="/dish">Pratos</Link>
+      </ApolloProvider>
+    </div>
+  );
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -88,6 +100,11 @@ class App extends React.Component {
           <Categories />
         </Route>
         <Route path="/category/:categoryId" component={CategoryPage} />
+
+        <Route exact path="/" component={HomePage}>
+          <HomePage />
+        </Route>
+
       </div>
     );
 
