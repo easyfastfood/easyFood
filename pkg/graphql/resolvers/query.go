@@ -17,7 +17,7 @@ func NewQueryResolver(services services.All) gqlgen.QueryResolver {
 }
 
 func (q queryResolver) Category(ctx context.Context, id *int) ([]*models.Category, error) {
-	categoryEntity, err := q.services.Category.Get(ctx,id)
+	categoryEntity, err := q.services.Category.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -34,10 +34,13 @@ func (q queryResolver) Dish(ctx context.Context, id *int) ([]*models.Dish, error
 	return models.NewDish(d...), nil
 }
 
-func (q queryResolver) Restaurant(ctx context.Context, id int) (*models.Restaurant, error) {
-	//TODO fetch restaurante
-	restaurant := models.NewRestaurant()
-	return restaurant[0], nil
+func (q queryResolver) Restaurant(ctx context.Context, id *int) ([]*models.Restaurant, error) {
+	u, err := q.services.Restaurant.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return models.NewRestaurant(u...), nil
 }
 
 func (q queryResolver) User(ctx context.Context, id int) (*models.User, error) {

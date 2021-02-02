@@ -70,7 +70,7 @@ input createRestaurantInput {
 
 type Query {
 	user(id: Int!): User!
-	restaurant(id: Int!): Restaurant!
+	restaurant(id: Int): [Restaurant!]
 	dish(id: Int): [Dish!]
 	category(id: Int): [Category!]
 }

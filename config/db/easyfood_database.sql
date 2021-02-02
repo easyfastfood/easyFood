@@ -33,7 +33,6 @@ INSERT INTO `categorias` (`id`, `nome`) VALUES
 -- Dumping structure for table easyfood.restaurantes
 CREATE TABLE IF NOT EXISTS `restaurantes` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
-  `id_categoria` INT(11) unsigned,
   `id_horario_abertura` INT(11) unsigned,
   `id_horario_fechamento` INT(11) unsigned,
   `id_cidade` INT(11) NOT NULL,
@@ -43,17 +42,15 @@ CREATE TABLE IF NOT EXISTS `restaurantes` (
   `telefone` varchar(11) NOT NULL,
   `endereco` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_categoria` (`id_categoria`),
   KEY `id_horario_abertura` (`id_horario_abertura`),
   KEY `id_horario_fechamento` (`id_horario_fechamento`),
-  CONSTRAINT `restaurante_categoria_fk` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `restaurante_horario_abertura_fk` FOREIGN KEY (`id_horario_abertura`) REFERENCES `dim_horas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `restaurante_horario_fechamento_fk` FOREIGN KEY (`id_horario_fechamento`) REFERENCES `dim_horas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-INSERT INTO `restaurantes` (`id_categoria` ,`id_horario_abertura` ,`id_horario_fechamento` ,`dias_funcionamento` ,`id_cidade` ,`nome` ,`descricao` ,`telefone` ,`endereco`) VALUES
-	(1, 5, 1200, 3, 2, "Restaurante do zé", "Melhor comida feita pelo zé", "31985467513", "Rua das flores, numero 12, bairro Sagrada Familia"),
-	(2, 700, 1200, 9, 3, "Maria das Massas", "Massas artesanais", "33985467513", "Rua das flores, numero 12, bairro Sagrada Familia");
+INSERT INTO `restaurantes` (`id_horario_abertura` ,`id_horario_fechamento` ,`dias_funcionamento` ,`id_cidade` ,`nome` ,`descricao` ,`telefone` ,`endereco`) VALUES
+	(5, 1200, 3, 2, "Restaurante do zé", "Melhor comida feita pelo zé", "31985467513", "Rua das flores, numero 12, bairro Sagrada Familia"),
+	(700, 1200, 9, 3, "Maria das Massas", "Massas artesanais", "33985467513", "Rua das flores, numero 12, bairro Sagrada Familia");
 
 -- Dumping data for table easyfood.categorias: ~0 rows (approximately)
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
