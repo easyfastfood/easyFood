@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `primeiro_nome` varchar(32) NOT NULL,
   `ultimo_nome` varchar(32) NOT NULL,
   `telefone` varchar(11) NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL UNIQUE,
   `senha_hash` BINARY(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
@@ -114,7 +114,7 @@ INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `se
   ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
   ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
   ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
-									    
+
 -- Dumping structure for table easyfood.reviews
 CREATE TABLE IF NOT EXISTS `reviews` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -128,11 +128,11 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   CONSTRAINT `review_id_usuario_fk` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `review_id_restaurante_fk` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-									    
+
 INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VALUES
 	(1, 1, 5, "Melhor restaurante da região."),
 	(3, 2, 3, "Bons pratos, péssimo atendimento.");
-									    
+
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
   `codigo` INT(7) unsigned NOT NULL DEFAULT 0,
@@ -140,10 +140,9 @@ CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `uf` CHAR(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-									    
+
 LOAD DATA INFILE 'easyfood/cidades/cidades.csv'
 	INTO TABLE `dim_cidade`
 	FIELDS TERMINATED BY ','
 	LINES TERMINATED BY '\n'
 	IGNORE 1 ROWS;
-									    
