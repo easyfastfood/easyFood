@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `categorias` (`id`) VALUES
+INSERT INTO `categorias` (`id`, `nome`) VALUES
   (1, "Brasileira"),
   (2, "Massas"),
   (3, "Japonesa");
