@@ -13,15 +13,16 @@ const (
 )
 
 type Restaurant struct {
-	Id          int       `db:"id"`
-	OpenHour    string    `db:"horario_abertura"`
-	CloseHour   string 	  `db:"horario_fechamento"`
-	CityID      *int      `db:"id_cidade"`
-	OpenDays    Weekdays  `db:"dias_funcionamento"`
-	Name        string    `db:"nome"`
-	Description *string   `db:"descricao"`
-	PhoneNumber string    `db:"telefone"`
-	Address     string    `db:"endereco"`
+	Id          int      `db:"id"`
+	OpenHour    string   `db:"horario_abertura"`
+	CloseHour   string   `db:"horario_fechamento"`
+	CityID      *int     `db:"id_cidade"`
+	OpenDays    Weekdays `db:"dias_funcionamento"`
+	Name        string   `db:"nome"`
+	Description *string  `db:"descricao"`
+	PhoneNumber string   `db:"telefone"`
+	Address     string   `db:"endereco"`
+	Owner       int      `db:"id_proprietario"`
 }
 
 func (r *Restaurant) IsEmpty() bool {

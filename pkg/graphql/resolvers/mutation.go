@@ -157,6 +157,12 @@ func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.Cre
 		return nil, errors.New("invalid phone number")
 	}
 
+	if input.Owner == 0 {
+		return nil, errors.New("invalid owner")
+	}
+
+
+
 	restaurant := entity.Restaurant{
 		OpenHour:    input.OpenHour,
 		CloseHour:   input.CloseHour,
@@ -165,6 +171,7 @@ func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.Cre
 		Description: input.Description,
 		PhoneNumber: input.PhoneNumber,
 		Address:     input.Address,
+		Owner:       input.Owner,
 	}
 
 	err := m.services.Restaurant.Create(ctx, &restaurant)
@@ -177,7 +184,7 @@ func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.Cre
 
 func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error) {
 	category := entity.Category{
-		Id: input.ID,
+		Id:   input.ID,
 		Name: input.Name,
 	}
 	err := m.services.Category.Update(ctx, &category)

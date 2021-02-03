@@ -17,10 +17,10 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `categorias` (`id`, `nome`) VALUES
-  (1, "Brasileira"),
-  (2, "Massas"),
-  (3, "Japonesa");
+INSERT INTO `categorias` (`nome`) VALUES
+  ("Brasileira"),
+  ("Massas"),
+  ("Japonesa");
 
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
     `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -36,12 +36,29 @@ LOAD DATA INFILE 'easyfood/cidades/cidades.csv'
     LINES TERMINATED BY '\n'
     IGNORE 1 ROWS;
 
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `primeiro_nome` varchar(32) NOT NULL,
+  `ultimo_nome` varchar(32) NOT NULL,
+  `telefone` varchar(11) NOT NULL,
+  `email` varchar(50) NOT NULL UNIQUE,
+  `senha_hash` BINARY(64) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
+  ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
+  ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
+  ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
+
+
 -- Dumping structure for table easyfood.restaurantes
 CREATE TABLE IF NOT EXISTS `restaurantes` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
   `horario_abertura` TIME,
   `horario_fechamento` TIME,
   `id_cidade` INT(11) unsigned,
+  `id_proprietario` INT(11) unsigned NOT NULL,
   `dias_funcionamento` TINYINT(3) unsigned NOT NULL COMMENT "Representacao binaria : 1 = segunda , 2 = terca, 4 = quarta etc",
   `nome` varchar(32) NOT NULL,
   `descricao` TEXT,
@@ -49,12 +66,14 @@ CREATE TABLE IF NOT EXISTS `restaurantes` (
   `endereco` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_cidade` (`id_cidade`),
-  CONSTRAINT `restaurante_cidade_fk` FOREIGN KEY (`id_cidade`) REFERENCES `dim_cidade` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  KEY `id_proprietario` (`id_proprietario`),
+  CONSTRAINT `restaurante_cidade_fk` FOREIGN KEY (`id_cidade`) REFERENCES `dim_cidade` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `restaurante_usuario_fk` FOREIGN KEY (`id_proprietario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-INSERT INTO `restaurantes` (`horario_abertura` ,`horario_fechamento` ,`dias_funcionamento` ,`id_cidade` ,`nome` ,`descricao` ,`telefone` ,`endereco`) VALUES
-	("15:00:00", "21:30:00", 3, 2, "Restaurante do zé", "Melhor comida feita pelo zé", "31985467513", "Rua das flores, numero 12, bairro Sagrada Familia"),
-	("10:45:00", "16:00:00", 9, 3, "Maria das Massas", "Massas artesanais", "33985467513", "Rua das flores, numero 12, bairro Sagrada Familia");
+INSERT INTO `restaurantes` (`horario_abertura` ,`horario_fechamento` ,`dias_funcionamento` ,`id_cidade` ,`nome` ,`descricao` ,`telefone` ,`endereco`, `id_proprietario`) VALUES
+	("15:00:00", "21:30:00", 3, 2, "Restaurante do zé", "Melhor comida feita pelo zé", "31985467513", "Rua das flores, numero 12, bairro Sagrada Familia", 1),
+	("10:45:00", "16:00:00", 9, 3, "Maria das Massas", "Massas artesanais", "33985467513", "Rua das flores, numero 12, bairro Sagrada Familia", 2);
 
 -- Dumping data for table easyfood.categorias: ~0 rows (approximately)
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
@@ -67,6 +86,12 @@ CREATE TABLE IF NOT EXISTS `restaurante-categoria` (
   CONSTRAINT `restaurante_fk` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `categoria_fk` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+INSERT INTO `restaurante-categoria` (`id_restaurante`, `id_categoria`) VALUES
+	(1, 1),
+	(2, 2),
+  (1, 2),
+  (2, 1);
 
 -- Dumping structure for table easyfood.pratos
 CREATE TABLE IF NOT EXISTS `pratos` (
@@ -85,12 +110,12 @@ CREATE TABLE IF NOT EXISTS `pratos` (
 
 -- Dumping data for table easyfood.pratos: ~0 rows (approximately)
 /*!40000 ALTER TABLE `pratos` DISABLE KEYS */;
-INSERT INTO `pratos` (`id`, `id_restaurante`, `id_categoria`, `nome`, `preco`, `tempo_de_preparo`) VALUES
-	(1, 1, NULL, 'tilápia', 45.00, 30),
-	(2, 1, NULL, 'batata frita', 15.00, 15),
-	(3, 1, NULL, 'batata frita com queijo', 18.00, 16),
-	(4, 2, NULL, 'iscas de frango acebolada', 20.00, 20),
-	(5, 2, NULL, 'filé parmegiana', 40.00, 40);
+INSERT INTO `pratos` (`id_restaurante`, `id_categoria`, `nome`, `preco`, `tempo_de_preparo`) VALUES
+	(1, NULL, 'tilápia', 45.00, 30),
+	(1, NULL, 'batata frita', 15.00, 15),
+	(1, NULL, 'batata frita com queijo', 18.00, 16),
+	(2, NULL, 'iscas de frango acebolada', 20.00, 20),
+	(2, NULL, 'filé parmegiana', 40.00, 40);
 /*!40000 ALTER TABLE `pratos` ENABLE KEYS */;
 
 -- Dumping data for table easyfood.restaurantes: ~0 rows (approximately)
@@ -100,21 +125,6 @@ INSERT INTO `pratos` (`id`, `id_restaurante`, `id_categoria`, `nome`, `preco`, `
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
-  `primeiro_nome` varchar(32) NOT NULL,
-  `ultimo_nome` varchar(32) NOT NULL,
-  `telefone` varchar(11) NOT NULL,
-  `email` varchar(50) NOT NULL UNIQUE,
-  `senha_hash` BINARY(64) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
-INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
-  ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
-  ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
-  ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
 
 -- Dumping structure for table easyfood.reviews
 CREATE TABLE IF NOT EXISTS `reviews` (
@@ -134,11 +144,6 @@ INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VAL
 	(1, 1, 5, "Melhor restaurante da região."),
 	(3, 2, 3, "Bons pratos, péssimo atendimento.");
 
-INSERT INTO `restaurante-categoria` (`id_restaurante`, `id_categoria`) VALUES
-	(1, 1),
-	(2, 2),
-  (1, 2),
-  (2, 1);
 
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,

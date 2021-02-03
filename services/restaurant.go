@@ -94,8 +94,8 @@ func (d restaurantService) GetByDish(ctx context.Context, dishID int) (*entity.R
 
 func (d restaurantService) Create(ctx context.Context, restaurant *entity.Restaurant) error {
 	query := `
-		INSERT INTO restaurantes (horario_abertura, horario_fechamento, id_cidade, dias_funcionamento, nome, descricao, telefone, endereco)
-		VALUES (:horario_abertura, :horario_fechamento, :id_cidade, :dias_funcionamento, :nome, :descricao, :telefone, :endereco)
+		INSERT INTO restaurantes (horario_abertura, horario_fechamento, id_cidade, dias_funcionamento, nome, descricao, telefone, endereco, id_proprietario)
+		VALUES (:horario_abertura, :horario_fechamento, :id_cidade, :dias_funcionamento, :nome, :descricao, :telefone, :endereco, :id_proprietario)
 	`
 
 	result, err := d.db.NamedExecContext(ctx, query, restaurant)

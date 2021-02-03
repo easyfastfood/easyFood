@@ -71,6 +71,7 @@ type CreateRestaurantInput struct {
 	Description *string    `json:"description"`
 	PhoneNumber string     `json:"phoneNumber"`
 	Address     string     `json:"address"`
+	Owner       int        `json:"owner"`
 }
 
 type CreateUserInput struct {

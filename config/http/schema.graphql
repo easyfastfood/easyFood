@@ -79,6 +79,7 @@ input createRestaurantInput {
 	description: String
 	phoneNumber: String!
 	address: String!
+	owner: Int!
 }
 
 input updateRestaurantInput {

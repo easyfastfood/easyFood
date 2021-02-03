@@ -19,6 +19,7 @@ func NewRestaurant(restaurants ...*entity.Restaurant) []*Restaurant {
 			Address:     restaurant.Address,
 			OpenHour:    restaurant.OpenHour,
 			CloseHour:   restaurant.CloseHour,
+			City:        &City{},
 		})
 	}
 
