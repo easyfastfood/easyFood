@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `categorias` (`id`, `nome`) VALUES
-  (1, "Brasileira"),
-  (2, "Massas"),
-  (3, "Japonesa");
+INSERT INTO `categorias` (`nome`) VALUES
+  ("Peixes"),
+  ("Massas"),
+  ("Entrada"),
+  ("Carnes"),
+  ("Estrangeira");
 
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
     `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -53,8 +55,10 @@ CREATE TABLE IF NOT EXISTS `restaurantes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 INSERT INTO `restaurantes` (`horario_abertura` ,`horario_fechamento` ,`dias_funcionamento` ,`id_cidade` ,`nome` ,`descricao` ,`telefone` ,`endereco`) VALUES
-	("15:00:00", "21:30:00", 3, 2, "Restaurante do zé", "Melhor comida feita pelo zé", "31985467513", "Rua das flores, numero 12, bairro Sagrada Familia"),
-	("10:45:00", "16:00:00", 9, 3, "Maria das Massas", "Massas artesanais", "33985467513", "Rua das flores, numero 12, bairro Sagrada Familia");
+	("15:00:00", "21:30:00", 3, 2, "Restaurante do zé", "Melhor comida feita pelo Zé", "31985467513", "Rua das Pétalas, numero 12, bairro Família Sagrada"),
+	("10:45:00", "16:00:00", 9, 3, "Maria das Massas", "Massas Artesanais", "33985467513", "Rua das Rosas, número 12, bairro Santa Família"),
+  ("09:00:00", "16:30:00", 55, 5, "Omelette du Frumage", "Restaurante Francês", "3182378172", "Rua das Orquídeas, número 332, bairro Sagrada Família");
+
 
 -- Dumping data for table easyfood.categorias: ~0 rows (approximately)
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
@@ -85,12 +89,14 @@ CREATE TABLE IF NOT EXISTS `pratos` (
 
 -- Dumping data for table easyfood.pratos: ~0 rows (approximately)
 /*!40000 ALTER TABLE `pratos` DISABLE KEYS */;
-INSERT INTO `pratos` (`id`, `id_restaurante`, `id_categoria`, `nome`, `preco`, `tempo_de_preparo`) VALUES
-	(1, 1, NULL, 'tilápia', 45.00, 30),
-	(2, 1, NULL, 'batata frita', 15.00, 15),
-	(3, 1, NULL, 'batata frita com queijo', 18.00, 16),
-	(4, 2, NULL, 'iscas de frango acebolada', 20.00, 20),
-	(5, 2, NULL, 'filé parmegiana', 40.00, 40);
+INSERT INTO `pratos` (`id_restaurante`, `id_categoria`, `nome`, `preco`, `tempo_de_preparo`) VALUES
+	(1, 1, 'Tilápia', 45.00, 30),
+	(1, 3, 'Batata Frita', 15.00, 15),
+	(1, 3, 'Batata Frita com Queijo', 18.00, 16),
+	(2, 4, 'Iscas de frango acebolada', 20.00, 20),
+	(2, 4, 'Filé Parmegiana', 40.00, 40),
+  (3, 5, 'Ratatouille', 65.00, 40),
+  (3, 5, 'Raclette', 110.00, 60);
 /*!40000 ALTER TABLE `pratos` ENABLE KEYS */;
 
 -- Dumping data for table easyfood.restaurantes: ~0 rows (approximately)
@@ -135,10 +141,10 @@ INSERT INTO `reviews` (`id_usuario`, `id_restaurante`, `nota`, `comentario`) VAL
 	(3, 2, 3, "Bons pratos, péssimo atendimento.");
 
 INSERT INTO `restaurante-categoria` (`id_restaurante`, `id_categoria`) VALUES
-	(1, 1),
-	(2, 2),
-  (1, 2),
-  (2, 1);
+	(3, 5),
+  (3, 2),
+  (1, 4),
+  (2, 2);
 
 CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -147,9 +153,3 @@ CREATE TABLE IF NOT EXISTS `dim_cidade` (
   `uf` CHAR(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
-LOAD DATA INFILE 'easyfood/cidades/cidades.csv'
-	INTO TABLE `dim_cidade`
-	FIELDS TERMINATED BY ','
-	LINES TERMINATED BY '\n'
-	IGNORE 1 ROWS;
