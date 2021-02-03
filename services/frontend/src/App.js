@@ -26,7 +26,15 @@ const CategoryPage = ({match}) => {
     return (
         <div>
             <ApolloProvider client={client}>
-                <GetCategoryByID filter={categoryId} />
+            <div class="splash-container">
+              <div class="splash">
+                  <p class="splash-in">
+                    <a><b>
+                     <GetCategoryByID filter={categoryId} />
+                    </b></a>
+                  </p>
+              </div>
+          </div>
             </ApolloProvider>
         </div>
     )
@@ -44,7 +52,15 @@ const RestaurantPage = ({match}) => {
   return (
     <div>
       <ApolloProvider client={client}>
-        <GetRestaurantsByID filter={restaurantId} />
+        <div class="splash-container">
+              <div class="splash">
+                  <p class="splash-in">
+                    <b>
+                      <GetRestaurantsByID filter={restaurantId} />
+                   </b>
+                </p>
+            </div>
+        </div>
       </ApolloProvider>
     </div>
   )
@@ -54,7 +70,16 @@ function Categories() {
     return (
         <div>
             <ApolloProvider client={client}>
-                <GetAllCategories />
+            <div class="splash-container">
+              <div class="splash">
+                <h1 class="splash-head">RESTAURANTES</h1>
+                  <p class="splash-subhead">
+                    <a><b>
+                     <GetAllCategories />
+                    </b></a>
+                   </p>
+                  </div>
+               </div>
             </ApolloProvider>
         </div>
     );
@@ -64,7 +89,16 @@ function Restaurants() {
   return (
     <div>
       <ApolloProvider client={client}>
-        <GetAllRestaurants />
+        <div class="splash-container">
+              <div class="splash">
+                <h1 class="splash-head">RESTAURANTES</h1>
+                  <p class="splash-subhead">
+                    <b>
+                    <GetAllRestaurants />
+                  </b>
+                </p>
+              </div>
+        </div>
       </ApolloProvider>
     </div>
   );
@@ -74,9 +108,18 @@ function HomePage() {
   return (
     <div>
       <ApolloProvider client={client}>
-        <Link to="/restaurant">Restaurantes</Link>
-        <Link to="/category">Categorias</Link>
-        <Link to="/dish">Pratos</Link>
+        <div class="splash-container">
+            <div class="splash">
+                <h1 class="splash-head">easyFood</h1>
+                  <p class="splash-subhead">
+                    <a><b>
+                      <Link to="/restaurant">RESTAURANTES<br></br></Link>
+                      <Link to="/category">CATEGORIAS<br></br></Link>
+                      <Link to="/dish">PRATOS<br></br></Link>
+                    </b></a>
+                </p>
+            </div>
+        </div>
       </ApolloProvider>
     </div>
   );

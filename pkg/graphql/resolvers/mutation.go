@@ -177,7 +177,7 @@ func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.Cre
 
 func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error) {
 	category := entity.Category{
-		Id: input.ID,
+		Id:   input.ID,
 		Name: input.Name,
 	}
 	err := m.services.Category.Update(ctx, &category)
@@ -206,4 +206,40 @@ func (m mutationResolver) UpdateDish(ctx context.Context, input models.UpdateDis
 	}
 
 	return models.NewDish(&dish)[0], nil
+}
+
+func (m mutationResolver) UpdateRestaurant(ctx context.Context, input models.UpdateRestaurantInput) (*models.Restaurant, error) {
+	if input.Name == "" {
+		return nil, errors.New("invalid name")
+	}
+
+	if input.Address == "" {
+		return nil, errors.New("invalid address")
+	}
+
+	if len(input.OpenDays) == 0 {
+		return nil, errors.New("must specify open days")
+	}
+
+	if input.PhoneNumber == "" {
+		return nil, errors.New("invalid phone number")
+	}
+
+	restaurant := entity.Restaurant{
+		Id:          input.ID,
+		OpenHour:    input.OpenHour,
+		CloseHour:   input.CloseHour,
+		OpenDays:    models.GetEntityWeekdays(input.OpenDays),
+		Name:        input.Name,
+		Description: input.Description,
+		PhoneNumber: input.PhoneNumber,
+		Address:     input.Address,
+	}
+
+	err := m.services.Restaurant.Update(ctx, &restaurant)
+	if err != nil {
+		return nil, err
+	}
+
+	return models.NewRestaurant(&restaurant)[0], nil
 }

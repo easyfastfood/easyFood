@@ -15,7 +15,6 @@ const GetAllRestaurants = () => {
 
   return (
     <>
-      {" "}
       <Restaurants error={error} loading={loading} data={data} />
       <Link to="/">Home</Link>
     </>
@@ -29,7 +28,6 @@ const GetRestaurantsByID = ({filter}) => {
   });
   return (
     <>
-      {" "}
       <Restaurant error={error} loading={loading} data={data} />
       <Link to="/">Home</Link>
     </>

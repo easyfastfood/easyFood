@@ -6,8 +6,8 @@ const Categories = ({ loading, error, data }) => {
     return (
         <ul>
             {data.category.map(category => (
-                <li onClick={ () => {window.location.pathname === "/category/" ?  window.location =  category.id : window.location = "category/"+category.id}
-                }>{category.name}</li>
+                <a onClick={ () => {window.location.pathname === "/category/" ?  window.location =  category.id : window.location = "category/"+category.id}
+                }>{category.name}</a>
             ))}
         </ul>
     );
@@ -21,7 +21,7 @@ const Category = ({ loading, error, data }) => {
             <h1>{data.category[0].name}</h1>
             <h2>
                 {data.category[0].restaurants && data.category[0].restaurants.map(restaurant => (
-                    <li onClick={ () => {window.location = restaurant.id}}>{restaurant.name} - {restaurant.description}</li>
+                    <a onClick={ () => {window.location = restaurant.id}}>{restaurant.name} - {restaurant.description}</a>
                 ))}
             </h2>
         </>
