@@ -17,7 +17,7 @@ const GetAllCategories = () => {
         <>
             {" "}
             <Categories error={error} loading={loading} data={data} />
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
         </>
     );
 };
@@ -31,7 +31,7 @@ const GetCategoryByID = ({filter}) => {
         <>
             {" "}
             <Category error={error} loading={loading} data={data} />
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
         </>
     );
 };

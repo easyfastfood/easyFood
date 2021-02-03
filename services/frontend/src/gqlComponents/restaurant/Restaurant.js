@@ -8,7 +8,7 @@ const Restaurants = ({ loading, error, data }) => {
       {data.restaurant.map(restaurant => (
         <a onClick={ () => {window.location.pathname === "/restaurant/" ?  window.location =  restaurant.id : window.location = "restaurant/"+restaurant.id}
         }>{restaurant.name}</a>
-      ))} 
+      ))}
     </ul>
   );
 };

@@ -18,6 +18,27 @@ body {
   font-size: 13px;
 }
 
+teste a  {
+  margin-right: 10px;
+  margin-left: 10px;
+  color: azure;
+  text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    text-align: center;
+    color:rgb(147, 217, 229);
+    display: block;
+    text-size-adjust: 150%;
+  }
+
+body {
+  line-height: 1.7em;
+  color: #7f8c8d;
+  font-size: 13px;
+}
+
 h1,
 h2,
 h3,
@@ -136,4 +157,18 @@ label {
   .splash-head {
       font-size: 300%;
   }
+}
+
+.login-form {
+  justify-content: center;
+  min-height: 90vh;
+}
+
+.button-block {
+  width: 100%;
+}
+.login-background {
+  justify-content: center;
+  min-height: 30vh;
+  padding: 50px;
 }

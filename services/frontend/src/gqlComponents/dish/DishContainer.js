@@ -17,7 +17,7 @@ const GetAllDishes = () => {
         <>
             {" "}
             <Dishes error={error} loading={loading} data={data} />
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
         </>
     );
 };
@@ -31,7 +31,7 @@ const GetDishById = ({filter}) => {
         <>
             {" "}
             <Dish error={error} loading={loading} data={data} />
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
         </>
     );
 };

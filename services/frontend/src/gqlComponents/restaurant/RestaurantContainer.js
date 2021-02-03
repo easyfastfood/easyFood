@@ -17,7 +17,7 @@ const GetAllRestaurants = () => {
     <>
       {" "}
       <Restaurants error={error} loading={loading} data={data} />
-      <Link to="/">Home</Link>
+      <Link to="/home">Home</Link>
     </>
   );
 };
@@ -31,7 +31,7 @@ const GetRestaurantsById = ({filter}) => {
     <>
       {" "}
       <Restaurant error={error} loading={loading} data={data} />
-      <Link to="/">Home</Link>
+      <Link to="/home">Home</Link>
     </>
   );
 };
